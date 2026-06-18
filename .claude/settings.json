@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm drizzle-kit *)",
+      "Bash(pnpm build *)",
+      "Bash(git check-ignore *)",
+      "Bash(git ls-tree *)",
+      "Bash(pnpm -r type-check)",
+      "Bash(pnpm --filter *)",
+      "WebSearch",
+      "WebFetch(domain:shadcn-vue.com)"
+    ]
+  }
+}

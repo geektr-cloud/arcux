@@ -1,0 +1,24 @@
+{
+  "name": "@acrux/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vue 异步状态 / 排序集合 / 校验抽象层（tuple-based）。",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "@standard-schema/spec": "^1.0.0",
+    "@vueuse/core": "^14.0.0",
+    "hono": "^4.0.0",
+    "vue": "^3.5.0"
+  },
+  "peerDependenciesMeta": {
+    "hono": {
+      "optional": true
+    }
+  }
+}

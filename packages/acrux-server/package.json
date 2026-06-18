@@ -1,0 +1,19 @@
+{
+  "name": "@acrux/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Hono + Drizzle (D1) 服务端抽象：createCrudRoutes、HTTP 错误、zod 校验件。",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type-check": "tsc --noEmit -p tsconfig.json"
+  },
+  "peerDependencies": {
+    "@hono/zod-validator": "^0.7.0",
+    "drizzle-orm": "1.0.0-rc.3",
+    "hono": "^4.0.0",
+    "zod": "^4.0.0"
+  }
+}

@@ -1,0 +1,38 @@
+name: Deploy acrux-docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/acrux-docs/**"
+      - "packages/acrux-registry/**"
+      - ".github/workflows/acrux-docs.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build docs (+ registry)
+        run: pnpm --filter acrux-docs build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/acrux-docs/.vitepress/dist --project-name acrux-docs --branch main

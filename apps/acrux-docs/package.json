@@ -1,0 +1,20 @@
+{
+  "name": "acrux-docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm run registry:build && vitepress dev",
+    "docs:dev": "vitepress dev",
+    "build": "pnpm run registry:build && pnpm run docs:build",
+    "docs:build": "vitepress build",
+    "registry:build": "pnpm --filter kitchen-sink registry:build",
+    "preview": "vitepress preview",
+    "docs:preview": "vitepress preview",
+    "deploy": "pnpm run build && wrangler pages deploy .vitepress/dist --project-name acrux-docs --branch main"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4",
+    "wrangler": "^4.101.0"
+  }
+}
