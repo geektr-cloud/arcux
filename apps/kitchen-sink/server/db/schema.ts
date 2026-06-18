@@ -9,7 +9,13 @@ export const memos = sqliteTable("Memo", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => uuidv7()),
+  title: text("title").notNull().default(""),
   content: text("content").notNull().default(""),
+  link: text("link").notNull().default(""),
+  metadata: text("metadata", { mode: "json" })
+    .notNull()
+    .default(sql`'null'`)
+    .$type<unknown>(),
   tags: text("tags", { mode: "json" })
     .notNull()
     .default(sql`'[]'`)

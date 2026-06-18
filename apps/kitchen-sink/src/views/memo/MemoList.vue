@@ -4,6 +4,7 @@ import { useMemoStore } from "@/stores/memos";
 import MemoEditor from "./MemoEditor.vue";
 import Button from "@/components/ui/button/Button.vue";
 import { useConfirmPopover, useFormModel } from "@/components/acrux-ui/actions";
+import { CopyTag, DateFormatter } from "@/components/acrux-ui/display";
 import { File, SquarePen, Trash2 } from "@lucide/vue";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -25,9 +26,10 @@ const removal = useConfirmPopover({
       <TableCaption>共 {{ items.length }} 条 memo</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>内容</TableHead>
+          <TableHead>标题 / 内容</TableHead>
           <TableHead>标签</TableHead>
           <TableHead>状态</TableHead>
+          <TableHead>更新</TableHead>
           <TableHead class="w-[120px]">操作</TableHead>
         </TableRow>
       </TableHeader>
@@ -35,17 +37,18 @@ const removal = useConfirmPopover({
         <TableRow v-for="row in items" :key="row.id">
           <TableCell class="max-w-[40ch] truncate">
             <Route :to="{ name: 'memo-detail', params: { id: row.id } }">
-              {{ row.content || "(空)" }}
+              {{ row.title || row.content || "(空)" }}
             </Route>
           </TableCell>
           <TableCell>
-            <Badge v-for="tag in row.tags" :key="tag" variant="secondary" class="mr-1">
-              {{ tag }}
-            </Badge>
+            <CopyTag v-for="tag in row.tags" :key="tag" :value="tag" variant="secondary" class="mr-1 inline-flex" />
           </TableCell>
           <TableCell>
             <Badge v-if="row.pinned" variant="default" class="mr-1">置顶</Badge>
             <Badge v-if="row.archived" variant="outline">归档</Badge>
+          </TableCell>
+          <TableCell class="text-zinc-500">
+            <DateFormatter :value="row.updatedAt" format="distance" />
           </TableCell>
           <TableCell>
             <Button variant="ghost" size="icon" as-child>

@@ -3,18 +3,18 @@ import { ref, watch } from "vue";
 import { Textarea } from "@/components/ui/textarea";
 
 const props = defineProps<{
-  modelValue?: Record<string, unknown>;
+  // Any valid JSON value — object, array, string, number, boolean, or null.
+  modelValue?: unknown;
   disabled?: boolean;
   class?: string;
 }>();
 
 const emit = defineEmits<{
-  "update:modelValue": [value: Record<string, unknown>];
+  "update:modelValue": [value: unknown];
   "update:invalid": [invalid: boolean];
 }>();
 
-const text = ref(JSON.stringify(props.modelValue ?? {}, null, 2));
-const error = ref("");
+const text = ref(JSON.stringify(props.modelValue ?? null, null, 2));
 
 watch(
   () => props.modelValue,
@@ -25,8 +25,7 @@ watch(
     } catch {
       // text is currently invalid — always sync
     }
-    text.value = JSON.stringify(val ?? {}, null, 2);
-    error.value = "";
+    text.value = JSON.stringify(val ?? null, null, 2);
     emit("update:invalid", false);
   },
 );
@@ -35,11 +34,10 @@ const onInput = (e: Event) => {
   const raw = (e.target as HTMLTextAreaElement).value;
   text.value = raw;
   try {
-    emit("update:modelValue", JSON.parse(raw) as Record<string, unknown>);
-    error.value = "";
+    emit("update:modelValue", JSON.parse(raw) as unknown);
     emit("update:invalid", false);
   } catch {
-    error.value = "JSON 格式无效";
+    // Keep the last valid value upstream; just flag the draft as unparseable.
     emit("update:invalid", true);
   }
 };
@@ -53,5 +51,4 @@ const onInput = (e: Event) => {
     spellcheck="false"
     @input="onInput"
   />
-  <p v-if="error" class="text-destructive text-xs">{{ error }}</p>
 </template>
